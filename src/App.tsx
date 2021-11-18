@@ -1,24 +1,11 @@
-import styled from 'styled-components';
-
-const Title = styled.h1`
-  font-size: 56px;
-  color: ${(props) => props.theme.textColor};
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => props.theme.backgroundColor};
-`;
+import Circle from './Circle';
 
 function App() {
   return (
-    <Wrapper>
-      <Title>Hello</Title>
-    </Wrapper>
+    <div>
+      <Circle bgColor="teal" borderColor="yellow" />
+      <Circle bgColor="tomato" text="Second Circle" />
+    </div>
   );
 }
 
