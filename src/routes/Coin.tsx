@@ -20,10 +20,29 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const HomeBtn = styled(Link)`
+  position: absolute;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  font-size: 18px;
+  font-weight: bold;
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+    border-color: ${(props) => props.theme.accentColor};
+    box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.4);
+  }
 `;
 
 const Title = styled.h1`
@@ -174,6 +193,7 @@ function Coin() {
         </title>
       </Helmet>
       <Header>
+        <HomeBtn to="/">&larr;</HomeBtn>
         <Title>
           {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}
         </Title>
