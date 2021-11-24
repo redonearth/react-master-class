@@ -209,7 +209,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
@@ -239,7 +239,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price priceData={tickersData?.quotes.USD} />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
