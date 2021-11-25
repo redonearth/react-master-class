@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const PriceInfo = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
+  border: 1px solid white;
   padding: 10px 20px;
   border-radius: 10px;
 `;

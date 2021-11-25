@@ -35,7 +35,8 @@ const HomeBtn = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid white;
+  border: 1px solid ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.cardBgColor};
   font-size: 18px;
   font-weight: bold;
   &:hover {
@@ -53,9 +54,10 @@ const Title = styled.h1`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
+  border: 1px solid white;
 `;
 
 const OverviewItem = styled.div`
@@ -87,7 +89,8 @@ const Tab = styled.div<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
+  border: 1px solid white;
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
