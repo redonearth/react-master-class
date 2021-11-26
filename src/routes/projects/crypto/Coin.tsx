@@ -10,7 +10,7 @@ import Price from './Price';
 import Chart from './Chart';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { fetchCoinInfo, fetchCoinTickers } from '../api';
+import { fetchCoinInfo, fetchCoinTickers } from '../../../api';
 import { Helmet } from 'react-helmet';
 
 const Container = styled.div`
