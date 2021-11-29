@@ -35,6 +35,7 @@ interface IForm {
   username: string;
   password: string;
   passwordConfirm: string;
+  extraError?: string;
 }
 
 function ToDoList() {
@@ -42,13 +43,25 @@ function ToDoList() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<IForm>({
     defaultValues: {
       email: '@gmail.com',
     },
   });
   const onValid = (data: IForm) => {
-    console.log(data);
+    if (data.password !== data.passwordConfirm) {
+      setError(
+        'passwordConfirm',
+        {
+          message: '패스워드가 다릅니다.',
+        },
+        { shouldFocus: true }
+      );
+    }
+    // setError('extraError', {
+    //   message: '서버 문제가 발생했습니다.',
+    // });
   };
   console.log(errors);
   return (
@@ -69,7 +82,15 @@ function ToDoList() {
         />
         <span>{errors?.email?.message}</span>
         <input
-          {...register('lastName', { required: '성을 입력하세요.' })}
+          {...register('lastName', {
+            required: '성을 입력하세요.',
+            validate: {
+              noRedo: (value) =>
+                value.includes('redo') ? 'redo는 허용하지 않습니다.' : true,
+              noJisang: (value) =>
+                value.includes('jisang') ? 'jisang는 허용하지 않습니다.' : true,
+            },
+          })}
           placeholder="성"
         />
         <span>{errors?.lastName?.message}</span>
@@ -92,7 +113,10 @@ function ToDoList() {
         <input
           {...register('password', {
             required: '패스워드를 입력하세요.',
-            minLength: 8,
+            minLength: {
+              value: 6,
+              message: '패스워드가 너무 짧습니다. 6자 이상 입력하세요.',
+            },
           })}
           placeholder="패스워드"
         />
@@ -100,12 +124,16 @@ function ToDoList() {
         <input
           {...register('passwordConfirm', {
             required: '패스워드를 한 번 더 입력하세요.',
-            minLength: 8,
+            minLength: {
+              value: 6,
+              message: '패스워드가 너무 짧습니다. 6자 이상 입력하세요.',
+            },
           })}
           placeholder="패스워드 확인"
         />
         <span>{errors?.passwordConfirm?.message}</span>
         <button>Add</button>
+        <span>{errors?.extraError?.message}</span>
       </form>
     </div>
   );
