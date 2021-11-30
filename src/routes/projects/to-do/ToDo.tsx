@@ -1,6 +1,11 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
+import styled from 'styled-components';
 import { Categories, IToDo, toDoState } from './atoms';
+
+const DeleteBtn = styled.button`
+  color: red;
+`;
 
 function ToDo({ id, text, category }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
@@ -11,11 +16,18 @@ function ToDo({ id, text, category }: IToDo) {
     setToDos((oldToDos) => {
       const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
       const newToDo: IToDo = { id, text, category: name as IToDo['category'] };
-      return [
-        ...oldToDos.slice(0, targetIndex),
-        newToDo,
-        ...oldToDos.slice(targetIndex + 1),
-      ];
+      if (name === 'DELETE') {
+        return [
+          ...oldToDos.slice(0, targetIndex),
+          ...oldToDos.slice(targetIndex + 1),
+        ];
+      } else {
+        return [
+          ...oldToDos.slice(0, targetIndex),
+          newToDo,
+          ...oldToDos.slice(targetIndex + 1),
+        ];
+      }
     });
   };
   return (
@@ -36,6 +48,9 @@ function ToDo({ id, text, category }: IToDo) {
           완료
         </button>
       )}
+      <DeleteBtn name="DELETE" onClick={onClick}>
+        삭제
+      </DeleteBtn>
     </li>
   );
 }
