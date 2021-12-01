@@ -1,3 +1,4 @@
+import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
@@ -16,6 +17,7 @@ interface IDraggableCardProps {
 }
 
 function DraggableCard({ workflow, index }: IDraggableCardProps) {
+  console.log(workflow, '가 렌더링 되었습니다.');
   return (
     <Draggable key={workflow} draggableId={workflow} index={index}>
       {(magic) => (
@@ -31,4 +33,4 @@ function DraggableCard({ workflow, index }: IDraggableCardProps) {
   );
 }
 
-export default DraggableCard;
+export default React.memo(DraggableCard);
