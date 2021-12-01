@@ -75,6 +75,7 @@ const OverviewItem = styled.div`
 
 const Description = styled.p`
   margin: 20px 0px;
+  color: ${(props) => props.theme.bgTextColor};
 `;
 
 const Tabs = styled.div`
@@ -174,8 +175,8 @@ interface IPriceData {
 function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<RouteState>();
-  const priceMatch = useRouteMatch('/:coinId/price');
-  const chartMatch = useRouteMatch('/:coinId/chart');
+  const priceMatch = useRouteMatch('/crypto/:coinId/price');
+  const chartMatch = useRouteMatch('/crypto/:coinId/chart');
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
     ['info', coinId],
     () => fetchCoinInfo(coinId)
@@ -196,7 +197,7 @@ function Coin() {
         </title>
       </Helmet>
       <Header>
-        <HomeBtn to="/">&larr;</HomeBtn>
+        <HomeBtn to="/crypto">&larr;</HomeBtn>
         <Title>
           {state?.name ? state.name : loading ? 'Loading...' : infoData?.name}
         </Title>
@@ -233,18 +234,18 @@ function Coin() {
 
           <Tabs>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={`/crypto/${coinId}/price`}>Price</Link>
             </Tab>
             <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+              <Link to={`/crypto/${coinId}/chart`}>Chart</Link>
             </Tab>
           </Tabs>
 
           <Switch>
-            <Route path={`/:coinId/price`}>
+            <Route path={`/crypto/:coinId/price`}>
               <Price priceData={tickersData?.quotes.USD} />
             </Route>
-            <Route path={`/:coinId/chart`}>
+            <Route path={`/crypto/:coinId/chart`}>
               <Chart coinId={coinId} />
             </Route>
           </Switch>
