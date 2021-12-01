@@ -66,6 +66,9 @@ function Projects() {
         <Project>
           <Link to="/to-do">To Do List</Link>
         </Project>
+        <Project>
+          <Link to="/kanban">Kanban</Link>
+        </Project>
       </ProjectList>
     </Container>
   );
