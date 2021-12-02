@@ -9,6 +9,8 @@ const Wrapper = styled.div`
   padding-top: 10px;
   border-radius: 5px;
   min-height: 300px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.h2`
@@ -16,6 +18,22 @@ const Title = styled.h2`
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 10px;
+`;
+
+interface IAreaProps {
+  isDraggingFromThis: boolean;
+  isDraggingOver: boolean;
+}
+
+const Area = styled.div<IAreaProps>`
+  background-color: ${(props) =>
+    props.isDraggingOver
+      ? 'pink'
+      : props.isDraggingFromThis
+      ? 'red'
+      : 'dodgerblue'};
+  flex-grow: 1;
+  transition: background-color 0.3s;
 `;
 
 interface IBoardProps {
@@ -28,13 +46,18 @@ function Board({ workflows, boardId }: IBoardProps) {
     <Wrapper>
       <Title>{boardId}</Title>
       <Droppable droppableId={boardId}>
-        {(magic) => (
-          <div ref={magic.innerRef} {...magic.droppableProps}>
+        {(magic, snapshot) => (
+          <Area
+            isDraggingOver={snapshot.isDraggingOver}
+            isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+            ref={magic.innerRef}
+            {...magic.droppableProps}
+          >
             {workflows.map((workflow, index) => (
               <DraggableCard key={workflow} index={index} workflow={workflow} />
             ))}
             {magic.placeholder}
-          </div>
+          </Area>
         )}
       </Droppable>
     </Wrapper>
