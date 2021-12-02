@@ -1,6 +1,14 @@
 import { atom } from 'recoil';
 
-export const workflowState = atom({
+interface IWorkflowState {
+  [key: string]: string[];
+}
+
+export const workflowState = atom<IWorkflowState>({
   key: 'workflow',
-  default: ['a', 'b', 'c', 'd', 'e', 'f'],
+  default: {
+    'To Do': ['a', 'b'],
+    Doing: ['c', 'd', 'e'],
+    Done: ['f'],
+  },
 });
