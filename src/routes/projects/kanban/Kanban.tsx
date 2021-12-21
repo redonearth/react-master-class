@@ -25,14 +25,15 @@ function Kanban() {
   const [workflows, setWorkflows] = useRecoilState(workflowState);
   const onDragEnd = (info: DropResult) => {
     console.log(info);
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // 같은 보드 안에서 이동
       setWorkflows((allBoards) => {
         const boardCopy = [...allBoards[source.droppableId]];
+        const taskObj = boardCopy[source.index];
         boardCopy.splice(source.index, 1);
-        boardCopy.splice(destination?.index, 0, draggableId);
+        boardCopy.splice(destination?.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId]: boardCopy,
@@ -43,9 +44,10 @@ function Kanban() {
     if (destination.droppableId !== source.droppableId) {
       setWorkflows((allBoards) => {
         const sourceBoard = [...allBoards[source.droppableId]];
+        const taskObj = sourceBoard[source.index];
         const destinationBoard = [...allBoards[destination.droppableId]];
         sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination.index, 0, draggableId);
+        destinationBoard.splice(destination.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId]: sourceBoard,

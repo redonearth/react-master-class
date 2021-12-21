@@ -15,14 +15,18 @@ const Card = styled.div<{ isDragging: boolean }>`
 `;
 
 interface IDraggableCardProps {
-  workflow: string;
+  workflowId: number;
+  workflowText: string;
   index: number;
 }
 
-function DraggableCard({ workflow, index }: IDraggableCardProps) {
-  console.log(workflow, '가 렌더링 되었습니다.');
+function DraggableCard({
+  workflowId,
+  workflowText,
+  index,
+}: IDraggableCardProps) {
   return (
-    <Draggable key={workflow} draggableId={workflow} index={index}>
+    <Draggable draggableId={workflowId + ''} index={index}>
       {(magic, snapshot) => (
         <Card
           isDragging={snapshot.isDragging}
@@ -30,7 +34,7 @@ function DraggableCard({ workflow, index }: IDraggableCardProps) {
           {...magic.draggableProps}
           {...magic.dragHandleProps}
         >
-          {workflow}
+          {workflowText}
         </Card>
       )}
     </Draggable>

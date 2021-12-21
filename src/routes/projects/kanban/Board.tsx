@@ -1,5 +1,8 @@
 import { Droppable } from 'react-beautiful-dnd';
+import { useForm } from 'react-hook-form';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { IWorkflow, workflowState } from './atoms';
 import DraggableCard from './DraggableCard';
 
 const Wrapper = styled.div`
@@ -36,15 +39,48 @@ const Area = styled.div<IAreaProps>`
   padding: 20px;
 `;
 
+const Form = styled.form`
+  width: 100%;
+  input {
+    width: 100%;
+  }
+`;
+
 interface IBoardProps {
-  workflows: string[];
+  workflows: IWorkflow[];
   boardId: string;
 }
 
+interface IForm {
+  toDo: string;
+}
+
 function Board({ workflows, boardId }: IBoardProps) {
+  const setWorkflows = useSetRecoilState(workflowState);
+  const { register, setValue, handleSubmit } = useForm<IForm>();
+  const onValid = ({ toDo }: IForm) => {
+    const newWorkflow = {
+      id: Date.now(),
+      text: toDo,
+    };
+    setWorkflows((allBoards) => {
+      return {
+        ...allBoards,
+        [boardId]: [...allBoards[boardId], newWorkflow],
+      };
+    });
+    setValue('toDo', '');
+  };
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register('toDo', { required: true })}
+          type="text"
+          placeholder={`Add task on ${boardId}`}
+        />
+      </Form>
       <Droppable droppableId={boardId}>
         {(magic, snapshot) => (
           <Area
@@ -54,7 +90,12 @@ function Board({ workflows, boardId }: IBoardProps) {
             {...magic.droppableProps}
           >
             {workflows.map((workflow, index) => (
-              <DraggableCard key={workflow} index={index} workflow={workflow} />
+              <DraggableCard
+                key={workflow.id}
+                index={index}
+                workflowId={workflow.id}
+                workflowText={workflow.text}
+              />
             ))}
             {magic.placeholder}
           </Area>
