@@ -19,3 +19,13 @@ export const lightTheme: DefaultTheme = {
   cardBorderColor: '#0652dd',
   boardColor: '#dadfe9',
 };
+
+export const gradientTheme: DefaultTheme = {
+  bgColor: 'linear-gradient(135deg, #e09, #d0e)',
+  bgTextColor: 'white',
+  textColor: '#ecf0f1',
+  accentColor: '#c7ecee',
+  cardBgColor: '#5758bb',
+  cardBorderColor: '#5758bb',
+  boardColor: '#dadfe9',
+};

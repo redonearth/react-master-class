@@ -1,9 +1,9 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Router from './Router';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { darkTheme, lightTheme } from './theme';
+import { darkTheme, gradientTheme, lightTheme } from './theme';
 import { useRecoilValue } from 'recoil';
-import { isDarkAtom } from './atoms';
+import { isDarkAtom, isGradientAtom } from './atoms';
 
 const GlobalStyle = createGlobalStyle`
   @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
@@ -60,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
-    background-color: ${(props) => props.theme.bgColor};
+    background: ${(props) => props.theme.bgColor};
     color: ${(props) => props.theme.textColor};
   }
   a {
@@ -71,9 +71,12 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
+  const isGradient = useRecoilValue(isGradientAtom);
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider
+        theme={isDark ? darkTheme : isGradient ? gradientTheme : lightTheme}
+      >
         <GlobalStyle />
         <Router />
         <ReactQueryDevtools initialIsOpen={true} />

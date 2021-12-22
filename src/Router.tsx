@@ -4,6 +4,7 @@ import Coin from './routes/projects/crypto/Coin';
 import Coins from './routes/projects/crypto/Coins';
 import ToDoList from './routes/projects/to-do/ToDoList';
 import Kanban from './routes/projects/kanban/Kanban';
+import AnimationField from './routes/projects/animation/AnimationField';
 
 function Router() {
   return (
@@ -20,6 +21,9 @@ function Router() {
         </Route>
         <Route path="/kanban">
           <Kanban />
+        </Route>
+        <Route path="/animation">
+          <AnimationField />
         </Route>
         <Route path="/">
           <Projects />

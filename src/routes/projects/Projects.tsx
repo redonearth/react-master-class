@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { isDarkAtom } from '../../atoms';
+import { isDarkAtom, isGradientAtom } from '../../atoms';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -13,8 +13,41 @@ const Container = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const BtnGroup = styled.div`
+  display: flex;
+`;
+
+const ToggleBtn = styled.button`
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: all 0.3s;
+`;
+
+const ToggleGradientBtn = styled(ToggleBtn)`
+  background: transparent;
+  color: ${(props) => props.theme.textColor};
+  border: 1px solid ${(props) => props.theme.accentColor};
+  &:hover {
+    background: ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.cardBgColor};
+  }
+`;
+
+const ToggleDarkBtn = styled(ToggleBtn)`
+  background: transparent;
+  color: ${(props) => props.theme.accentColor};
+  border: 1px solid ${(props) => props.theme.accentColor};
+  &:hover {
+    background: ${(props) => props.theme.accentColor};
+    color: ${(props) => props.theme.textColor};
+  }
 `;
 
 const ProjectList = styled.ul``;
@@ -42,13 +75,19 @@ const Project = styled.li`
 `;
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 36px;
   color: ${(props) => props.theme.accentColor};
+  margin-top: 15px;
 `;
 
 function Projects() {
+  const gradientAtom = useRecoilValue(isGradientAtom);
+  const setGradientAtom = useSetRecoilState(isGradientAtom);
   const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+  const toggleGradientAtom = () => setGradientAtom((prev) => !prev);
+  const toggleDarkAtom = () => {
+    if (!gradientAtom) setDarkAtom((prev) => !prev);
+  };
   return (
     <Container>
       <Helmet>
@@ -56,7 +95,14 @@ function Projects() {
       </Helmet>
       <Header>
         <Title>프로젝트</Title>
-        <button onClick={toggleDarkAtom}>Toggle Mode</button>
+        <BtnGroup>
+          <ToggleGradientBtn onClick={toggleGradientAtom}>
+            Gradient {gradientAtom ? 'On' : 'Off'}
+          </ToggleGradientBtn>
+          {!gradientAtom && (
+            <ToggleDarkBtn onClick={toggleDarkAtom}>Toggle Mode</ToggleDarkBtn>
+          )}
+        </BtnGroup>
       </Header>
 
       <ProjectList>
@@ -68,6 +114,9 @@ function Projects() {
         </Project>
         <Project>
           <Link to="/kanban">Kanban</Link>
+        </Project>
+        <Project>
+          <Link to="/animation">Animation</Link>
         </Project>
       </ProjectList>
     </Container>
