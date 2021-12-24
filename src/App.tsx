@@ -80,7 +80,7 @@ function App() {
         />
       </Helmet>
       <ThemeProvider
-        theme={isDark ? darkTheme : isGradient ? gradientTheme : lightTheme}
+        theme={isGradient ? gradientTheme : isDark ? darkTheme : lightTheme}
       >
         <GlobalStyle />
         <Router />

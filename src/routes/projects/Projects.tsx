@@ -97,7 +97,7 @@ function Projects() {
         <Title>프로젝트</Title>
         <BtnGroup>
           <ToggleGradientBtn onClick={toggleGradientAtom}>
-            Gradient {gradientAtom ? 'On' : 'Off'}
+            Gradient {!gradientAtom ? 'On' : 'Off'}
           </ToggleGradientBtn>
           {!gradientAtom && (
             <ToggleDarkBtn onClick={toggleDarkAtom}>Toggle Mode</ToggleDarkBtn>
