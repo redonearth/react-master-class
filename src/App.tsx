@@ -137,7 +137,7 @@ function App() {
             </ToggleGradientBtn>
             {!gradientAtom && (
               <ToggleDarkBtn onClick={toggleDarkAtom}>
-                Toggle Mode
+                Dark {!isDark ? 'On' : 'Off'}
               </ToggleDarkBtn>
             )}
           </BtnGroup>
