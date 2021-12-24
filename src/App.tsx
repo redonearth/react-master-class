@@ -4,10 +4,9 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { darkTheme, gradientTheme, lightTheme } from './theme';
 import { useRecoilValue } from 'recoil';
 import { isDarkAtom, isGradientAtom } from './atoms';
+import { Helmet } from 'react-helmet';
 
 const GlobalStyle = createGlobalStyle`
-  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
-
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -74,6 +73,12 @@ function App() {
   const isGradient = useRecoilValue(isGradientAtom);
   return (
     <>
+      <Helmet>
+        <link
+          rel="import"
+          href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css)"
+        />
+      </Helmet>
       <ThemeProvider
         theme={isDark ? darkTheme : isGradient ? gradientTheme : lightTheme}
       >
