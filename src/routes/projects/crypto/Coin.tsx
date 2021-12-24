@@ -11,7 +11,7 @@ import Chart from './Chart';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { fetchCoinInfo, fetchCoinTickers } from '../../../api';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const Container = styled.div`
   padding: 0px 20px;

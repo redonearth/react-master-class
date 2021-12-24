@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { darkTheme, gradientTheme, lightTheme } from './theme';
 import { useRecoilValue } from 'recoil';
 import { isDarkAtom, isGradientAtom } from './atoms';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
