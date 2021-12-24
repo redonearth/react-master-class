@@ -1,8 +1,8 @@
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import Router from './Router';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { darkTheme, gradientTheme, lightTheme } from './theme';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isDarkAtom, isGradientAtom } from './atoms';
 import { Helmet } from 'react-helmet-async';
 
@@ -68,9 +68,56 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Header = styled.header`
+  height: 5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BtnGroup = styled.div`
+  display: flex;
+`;
+
+const ToggleBtn = styled.button`
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  transition: all 0.3s;
+`;
+
+const ToggleGradientBtn = styled(ToggleBtn)`
+  background: transparent;
+  color: ${(props) => props.theme.textColor};
+  border: 1px solid ${(props) => props.theme.accentColor};
+  &:hover {
+    background: ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.cardBgColor};
+  }
+`;
+
+const ToggleDarkBtn = styled(ToggleBtn)`
+  background: transparent;
+  color: ${(props) => props.theme.accentColor};
+  border: 1px solid ${(props) => props.theme.accentColor};
+  &:hover {
+    background: ${(props) => props.theme.accentColor};
+    color: ${(props) => props.theme.textColor};
+  }
+`;
+
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
   const isGradient = useRecoilValue(isGradientAtom);
+  const gradientAtom = useRecoilValue(isGradientAtom);
+  const setGradientAtom = useSetRecoilState(isGradientAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleGradientAtom = () => setGradientAtom((prev) => !prev);
+  const toggleDarkAtom = () => {
+    if (!gradientAtom) setDarkAtom((prev) => !prev);
+  };
   return (
     <>
       <Helmet>
@@ -79,9 +126,23 @@ function App() {
           href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css)"
         />
       </Helmet>
+
       <ThemeProvider
         theme={isGradient ? gradientTheme : isDark ? darkTheme : lightTheme}
       >
+        <Header>
+          <BtnGroup>
+            <ToggleGradientBtn onClick={toggleGradientAtom}>
+              Gradient {!gradientAtom ? 'On' : 'Off'}
+            </ToggleGradientBtn>
+            {!gradientAtom && (
+              <ToggleDarkBtn onClick={toggleDarkAtom}>
+                Toggle Mode
+              </ToggleDarkBtn>
+            )}
+          </BtnGroup>
+        </Header>
+
         <GlobalStyle />
         <Router />
         <ReactQueryDevtools initialIsOpen={true} />
