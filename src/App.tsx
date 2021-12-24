@@ -5,6 +5,7 @@ import { darkTheme, gradientTheme, lightTheme } from './theme';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isDarkAtom, isGradientAtom } from './atoms';
 import { Helmet } from 'react-helmet-async';
+import { useCallback, useEffect } from 'react';
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -111,13 +112,34 @@ const ToggleDarkBtn = styled(ToggleBtn)`
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
   const isGradient = useRecoilValue(isGradientAtom);
-  const gradientAtom = useRecoilValue(isGradientAtom);
   const setGradientAtom = useSetRecoilState(isGradientAtom);
   const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleGradientAtom = () => setGradientAtom((prev) => !prev);
-  const toggleDarkAtom = () => {
-    if (!gradientAtom) setDarkAtom((prev) => !prev);
+  const toggleGradientAtom = () => {
+    setGradientAtom((prev) => !prev);
+    !isGradient
+      ? localStorage.setItem('gradientMode', 'enabled')
+      : localStorage.setItem('gradientMode', 'disabled');
   };
+  const toggleDarkAtom = () => {
+    if (!isGradient) {
+      setDarkAtom((prev) => !prev);
+      !isDark
+        ? localStorage.setItem('darkMode', 'enabled')
+        : localStorage.setItem('darkMode', 'disabled');
+    }
+  };
+  const enableGradientMode = useCallback(() => {
+    let gradientMode = localStorage.getItem('gradientMode');
+    if (gradientMode === 'enabled') setGradientAtom(true);
+  }, [setGradientAtom]);
+  const enableDarkMode = useCallback(() => {
+    let darkMode = localStorage.getItem('darkMode');
+    if (darkMode === 'enabled') setDarkAtom(true);
+  }, [setDarkAtom]);
+  useEffect(() => {
+    enableGradientMode();
+    enableDarkMode();
+  }, [enableGradientMode, enableDarkMode]);
   return (
     <>
       <Helmet>
@@ -133,9 +155,9 @@ function App() {
         <Header>
           <BtnGroup>
             <ToggleGradientBtn onClick={toggleGradientAtom}>
-              Gradient {!gradientAtom ? 'On' : 'Off'}
+              Gradient {!isGradient ? 'On' : 'Off'}
             </ToggleGradientBtn>
-            {!gradientAtom && (
+            {!isGradient && (
               <ToggleDarkBtn onClick={toggleDarkAtom}>
                 Dark {!isDark ? 'On' : 'Off'}
               </ToggleDarkBtn>
