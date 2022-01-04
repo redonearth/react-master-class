@@ -1,5 +1,5 @@
-import { motion, Variants } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useMotionValue, Variants } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -87,6 +87,10 @@ const boxVariants: Variants = {
 
 function AnimationField() {
   const biggerBoxRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  useEffect(() => {
+    x.onChange(() => console.log(x.get()));
+  }, [x]);
   return (
     <Wrapper>
       <GridBox variants={gridBoxVariants} initial="start" animate="end">
@@ -106,6 +110,7 @@ function AnimationField() {
           whileTap="click"
         />
       </BiggerBox>
+      <Box style={{ x }} drag="x" dragSnapToOrigin />
     </Wrapper>
   );
 }
