@@ -12,8 +12,12 @@ const Wrapper = styled.div`
   height: 200vh;
   width: 100vw;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+`;
+
+const BoxContainer = styled.div`
+  padding-block: 10rem;
 `;
 
 const BiggerBox = styled.div`
@@ -108,28 +112,36 @@ function AnimationField() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
   return (
     <Wrapper>
-      <GridBox variants={gridBoxVariants} initial="start" animate="end">
-        <Circle variants={circleVarients} />
-        <Circle variants={circleVarients} />
-        <Circle variants={circleVarients} />
-        <Circle variants={circleVarients} />
-      </GridBox>
-      <BiggerBox ref={biggerBoxRef}>
+      <BoxContainer>
+        <GridBox variants={gridBoxVariants} initial="start" animate="end">
+          <Circle variants={circleVarients} />
+          <Circle variants={circleVarients} />
+          <Circle variants={circleVarients} />
+          <Circle variants={circleVarients} />
+        </GridBox>
+      </BoxContainer>
+
+      <BoxContainer>
+        <BiggerBox ref={biggerBoxRef}>
+          <Box
+            drag
+            dragSnapToOrigin
+            dragElastic={0.5}
+            dragConstraints={biggerBoxRef}
+            variants={boxVariants}
+            whileHover="hover"
+            whileTap="click"
+          />
+        </BiggerBox>
+      </BoxContainer>
+
+      <BoxContainer>
         <Box
-          drag
+          style={{ x, rotateZ, background: gradient, scale }}
+          drag="x"
           dragSnapToOrigin
-          dragElastic={0.5}
-          dragConstraints={biggerBoxRef}
-          variants={boxVariants}
-          whileHover="hover"
-          whileTap="click"
         />
-      </BiggerBox>
-      <Box
-        style={{ x, rotateZ, background: gradient, scale }}
-        drag="x"
-        dragSnapToOrigin
-      />
+      </BoxContainer>
     </Wrapper>
   );
 }
