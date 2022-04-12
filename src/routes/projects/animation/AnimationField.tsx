@@ -1,11 +1,12 @@
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useTransform,
   useViewportScroll,
   Variants,
 } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -17,6 +18,7 @@ const Wrapper = styled.div`
 `;
 
 const BoxContainer = styled.div`
+  display: flex;
   padding-block: 10rem;
 `;
 
@@ -154,6 +156,23 @@ const toyotaSvgVariants: Variants = {
   },
 };
 
+const popupVariants: Variants = {
+  start: {
+    opacity: 0,
+    scale: 0,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    rotateZ: 360,
+  },
+  leaving: {
+    opacity: 0,
+    scale: 0,
+    y: -50,
+  },
+};
+
 function AnimationField() {
   const biggerBoxRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -169,6 +188,8 @@ function AnimationField() {
   );
   const { scrollYProgress } = useViewportScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [0.5, 2]);
+  const [showing, setShowing] = useState(false);
+  const toggleShowing = () => setShowing((prev) => !prev);
   return (
     <Wrapper>
       <BoxContainer>
@@ -194,7 +215,7 @@ function AnimationField() {
         </BiggerBox>
       </BoxContainer>
 
-      <BoxContainer>
+      <BoxContainer style={{ paddingBlock: '20rem' }}>
         <Box
           style={{ x, rotateZ, background: gradient, scale }}
           drag="x"
@@ -227,6 +248,27 @@ function AnimationField() {
             d="M7.19,9.49C6.39,9,5.8,7.25,5.8,5.18V5h0C3.56,4.61,1.94,3.64,1.9,2.5h0A3.65,3.65,0,0,0,1,4.82C1,7.29,3.75,9.31,7.18,9.49ZM0,5C0,2.24,3.44,0,7.68,0s7.67,2.24,7.67,5-3.43,5-7.67,5S0,7.76,0,5ZM7.68.72c.81,0,1.51,1.24,1.77,3h0c1.59-.24,2.7-.82,2.7-1.48,0-.89-2-1.62-4.47-1.62S3.2,1.32,3.2,2.21c0,.66,1.11,1.23,2.7,1.48h0C6.16,2,6.86.72,7.68.72Zm.49,8.77c3.44-.18,6.15-2.2,6.15-4.67a3.71,3.71,0,0,0-.86-2.31h0c0,1.14-1.66,2.1-3.9,2.45h0v.23C9.55,7.25,9,9,8.16,9.49ZM7.68,3.82c.35,0,.71,0,1.06,0h0c-.17-1.11-.58-1.89-1.06-1.89s-.9.78-1.07,1.89h0c.35,0,.71,0,1.07,0Zm0,4.11c.61,0,1.11-1.28,1.14-2.89h0A12.51,12.51,0,0,1,6.53,5h0C6.56,6.65,7.06,7.93,7.68,7.93Z"
           />
         </ToyotaSvg>
+      </BoxContainer>
+
+      <BoxContainer
+        style={{ flexDirection: 'column-reverse', alignItems: 'center' }}
+      >
+        <button
+          onClick={toggleShowing}
+          style={{ cursor: 'pointer', marginTop: '2rem', width: '100px' }}
+        >
+          Click
+        </button>
+        <AnimatePresence>
+          {showing ? (
+            <Box
+              variants={popupVariants}
+              initial="start"
+              animate="visible"
+              exit="leaving"
+            />
+          ) : null}
+        </AnimatePresence>
       </BoxContainer>
     </Wrapper>
   );
